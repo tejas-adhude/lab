@@ -5,7 +5,7 @@ public class FCFS {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("*** First Come First Serve Scheduling ***");
+        System.out.println("\n\n*.*.program for FCFS cpu Scheduling.*.*\n");
         int n = getNumberOfProcesses(sc);
         int[] process = new int[n];
         int[] arrivalTime = new int[n];
@@ -25,9 +25,9 @@ public class FCFS {
     private static void inputProcessDetails(Scanner sc, int n, int[] process, int[] arrivalTime, int[] burstTime) {
         for (int i = 0; i < n; i++) {
             process[i] = (i + 1);
-            System.out.print("\nEnter Arrival Time for Processor " + process[i] + ": ");
+            System.out.print("\nEnter P" + process[i] + " AT: ");
             arrivalTime[i] = sc.nextInt();
-            System.out.print("Enter Burst Time for Processor " + process[i] + ": ");
+            System.out.print("Enter P" + process[i] + " BT: ");
             burstTime[i] = sc.nextInt();
         }
     }
@@ -72,8 +72,8 @@ public class FCFS {
 
     private static void displayFCFSTable(int n, int[] process, int[] arrivalTime, int[] burstTime,
             int[] completionTime, int[] turnaroundTime, int[] waitingTime) {
-        System.out.println("\n*** First Come First Serve Scheduling ***");
-        System.out.println("Processor\tArrival time\tBrust time\tCompletion Time\tTurn around time\tWaiting time");
+        
+        System.out.println("\nProcess no\tArrival time\tBrust time\tCompletion Time\tTurn around time\tWaiting time");
         System.out.println(
                 "----------------------------------------------------------------------------------------------------------");
         for (int i = 0; i < n; i++) {

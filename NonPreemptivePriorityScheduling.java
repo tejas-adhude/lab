@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class NonPreemptivePriorityScheduling {
 
     public static void main(String[] args) {
-        System.out.println("*** Priority Scheduling (Non Preemptive) ***");
+        System.out.println("\n\n*.*.program for priority cpu Scheduling.*.*\n");
         Scanner sc = new Scanner(System.in);
 
         int n = getNumberOfProcesses(sc);
@@ -35,11 +35,11 @@ public class NonPreemptivePriorityScheduling {
     private static void inputProcessDetails(Scanner sc, int n, int[] process, int[] arrivalTime, int[] burstTime, int[] priority) {
         for (int i = 0; i < n; i++) {
             process[i] = i + 1;
-            System.out.print("\nEnter Arrival Time for Processor " + process[i] + ": ");
+            System.out.print("\nEnter P" + process[i] + " AT: ");
             arrivalTime[i] = sc.nextInt();
-            System.out.print("Enter Burst Time for Processor " + process[i] + ": ");
+            System.out.print("Enter P" + process[i] + " BT: ");
             burstTime[i] = sc.nextInt();
-            System.out.print("Enter Priority for Processor " + process[i] + ": ");
+            System.out.print("Enter P" + process[i] + " PRIO: ");
             priority[i] = sc.nextInt();
         }
     }
@@ -116,8 +116,7 @@ public class NonPreemptivePriorityScheduling {
 
     private static void displayResults(int n, int[] process, int[] arrivalTime, int[] burstTime,
                                        int[] completionTime, int[] TAT, int[] waitingTime) {
-        System.out.println("\n*** Priority Scheduling (Non Preemptive) ***");
-        System.out.println("Processor\tArrival time\tBurst time\tCompletion Time\tTurn around time\tWaiting time");
+        System.out.println("\nProcessor\tArrival time\tBurst time\tCompletion Time\tTurn around time\tWaiting time");
         System.out.println(
                 "----------------------------------------------------------------------------------------------------------");
         for (int i = 0; i < n; i++) {

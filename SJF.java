@@ -1,9 +1,21 @@
-
-import java.util.*;
+import java.util.Scanner;
 
 public class SJF {
-    // Function to sort processes based on arrival time
-    public static void sortProcesses(int n, int[] process, int[] arrivalTime, int[] burstTime, int[] remBurstTime) {
+
+    static void inputProcesses(int n, int[] process, int[] arrivalTime, int[] burstTime, int[] remBurstTime, int[] visit, Scanner sc) {
+        for (int i = 0; i < n; i++) {
+            System.out.println(" ");
+            process[i] = (i + 1);
+            System.out.print("Enter P" + (i + 1) + " AT: ");
+            arrivalTime[i] = sc.nextInt();
+            System.out.print("Enter P" + (i + 1) + " BT: ");
+            burstTime[i] = sc.nextInt();
+            remBurstTime[i] = burstTime[i];
+            visit[i] = 0;
+        }
+    }
+
+    static void sortProcesses(int n, int[] process, int[] arrivalTime, int[] burstTime, int[] remBurstTime) {
         int temp;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
@@ -25,101 +37,85 @@ public class SJF {
         }
     }
 
-    // Function to perform Shortest Job First Scheduling
-    public static void shortestJobFirst(int n, int[] process, int[] arrivalTime, int[] burstTime) {
-        int[] completionTime = new int[n];
-        int[] turnAroundTime = new int[n];
-        int[] waitingTime = new int[n];
-        int[] visited = new int[n];
-        int[] remBurstTime = Arrays.copyOf(burstTime, n);
-        int total = 0;
-        int start = 0;
-
+    static void shortestJobFirst(int n, int[] arrivalTime, int[] burstTime, int[] remBurstTime, int[] visit, int[] completionTime) {
+        int start = 0, total = 0;
         while (true) {
-            int min = Integer.MAX_VALUE;
-            int c = n;
-
+            int min = 99, c = n;
             if (total == n) {
                 break;
             }
-
             for (int i = 0; i < n; i++) {
-                if (arrivalTime[i] <= start && visited[i] == 0 && burstTime[i] < min) {
+                if ((arrivalTime[i] <= start) && (visit[i] == 0) && (burstTime[i] < min)) {
                     min = burstTime[i];
                     c = i;
                 }
             }
 
-            if (c == n) {
+            if (c == n)
                 start++;
-            } else {
+            else {
                 burstTime[c]--;
                 start++;
                 if (burstTime[c] == 0) {
                     completionTime[c] = start;
-                    visited[c] = 1;
+                    visit[c] = 1;
                     total++;
                 }
             }
         }
-
-        for (int i = 0; i < n; i++) {
-            turnAroundTime[i] = completionTime[i] - arrivalTime[i];
-            waitingTime[i] = turnAroundTime[i] - remBurstTime[i];
-        }
-
-        displayProcessDetails(n, process, arrivalTime, remBurstTime, completionTime, turnAroundTime, waitingTime);
-        calculateAverageTimes(n, turnAroundTime, waitingTime);
     }
 
-    // Function to display process details
-    public static void displayProcessDetails(int n, int[] process, int[] arrivalTime, int[] remBurstTime,
-                                            int[] completionTime, int[] turnAroundTime, int[] waitingTime) {
-        System.out.println("*** Shortest Job First Scheduling (Preemptive) ***");
-        System.out.println("Processor\tArrival time\tBrust time\tCompletion Time\tTurn around time\tWaiting time");
+    static void calculateTimes(int n, int[] arrivalTime, int[] remBurstTime, int[] completionTime, int[] TAT, int[] waitingTime) {
+        for (int i = 0; i < n; i++) {
+            TAT[i] = completionTime[i] - arrivalTime[i];
+            waitingTime[i] = TAT[i] - remBurstTime[i];
+        }
+    }
+
+    static void displayProcesses(int n, int[] process, int[] arrivalTime, int[] remBurstTime, int[] completionTime, int[] TAT, int[] waitingTime) {
+        System.out.println("\nProcessor\tArrival time\tBrust time\tCompletion Time\t\tTurn around time\tWaiting time");
         System.out.println(
                 "----------------------------------------------------------------------------------------------------------");
         for (int i = 0; i < n; i++) {
             System.out.println("P" + process[i] + "\t\t" + arrivalTime[i] + "ms\t\t" + remBurstTime[i] + "ms\t\t"
-                    + completionTime[i] + "ms\t\t\t" + turnAroundTime[i] + "ms\t\t\t" + waitingTime[i] + "ms");
+                    + completionTime[i] + "ms\t\t\t" + TAT[i] + "ms\t\t\t" + waitingTime[i] + "ms");
         }
     }
 
-    // Function to calculate average turnaround time and waiting time
-    public static void calculateAverageTimes(int n, int[] turnAroundTime, int[] waitingTime) {
-        float avgTAT = 0, avgWT = 0;
-        for (int i = 0; i < n; i++) {
-            avgTAT += turnAroundTime[i];
-            avgWT += waitingTime[i];
-        }
-        avgTAT /= n;
-        avgWT /= n;
-        System.out.println("\nAverage turn around time is " + avgTAT);
-        System.out.println("Average waiting time is " + avgWT);
-    }
-
-    public static void main(String[] args) {
+    public static void main(String args[]) {
         Scanner sc = new Scanner(System.in);
-        System.out.println("*** Shortest Job First Scheduling (Preemptive) ***");
-        System.out.print("Enter the number of processes: ");
+        System.out.println("\n\n*.*.program for SJF cpu Scheduling.*.*\n");
+        System.out.print("Enter no of process:");
         int n = sc.nextInt();
-
         int[] process = new int[n];
         int[] arrivalTime = new int[n];
         int[] burstTime = new int[n];
+        int[] completionTime = new int[n];
+        int[] TAT = new int[n];
+        int[] waitingTime = new int[n];
+        int[] visit = new int[n];
+        int[] remBurstTime = new int[n];
 
+        inputProcesses(n, process, arrivalTime, burstTime, remBurstTime, visit, sc);
+
+        sortProcesses(n, process, arrivalTime, burstTime, remBurstTime);
+
+        shortestJobFirst(n, arrivalTime, burstTime, remBurstTime, visit, completionTime);
+
+        calculateTimes(n, arrivalTime, remBurstTime, completionTime, TAT, waitingTime);
+
+        displayProcesses(n, process, arrivalTime, remBurstTime, completionTime, TAT, waitingTime);
+
+        float avgTAT = 0, avgwt = 0;
         for (int i = 0; i < n; i++) {
-            System.out.println(" ");
-            process[i] = (i + 1);
-            System.out.print("Enter Arrival Time for processor " + (i + 1) + ": ");
-            arrivalTime[i] = sc.nextInt();
-            System.out.print("Enter Burst Time for processor " + (i + 1) + ": ");
-            burstTime[i] = sc.nextInt();
+            avgTAT += TAT[i];
+            avgwt += waitingTime[i];
         }
+        avgTAT /= n;
+        avgwt /= n;
 
-        sortProcesses(n, process, arrivalTime, burstTime, burstTime);
-        shortestJobFirst(n, process, arrivalTime, burstTime);
+        System.out.println("\nAverage turn around time is " + avgTAT);
+        System.out.println("Average waiting time is " + avgwt);
         sc.close();
     }
 }
-

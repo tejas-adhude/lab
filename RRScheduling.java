@@ -11,7 +11,7 @@ public class RRScheduling {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        System.out.println("*** RR Scheduling (Preemptive) ***");
+        System.out.println("\n\n*.*.program for RR cpu Scheduling.*.*\n");
         int n = getNumberOfProcesses(sc);
         Process[] processes = inputProcessDetails(sc, n);
 
@@ -34,9 +34,9 @@ public class RRScheduling {
         for (int i = 0; i < n; i++) {
             processes[i] = new Process();
             processes[i].processID = i + 1;
-            System.out.print("Enter the arrival time for P" + processes[i].processID + ": ");
+            System.out.print("Enter P" + processes[i].processID + " AT: ");
             processes[i].arrival = sc.nextInt();
-            System.out.print("Enter the burst time for P" + processes[i].processID + ": ");
+            System.out.print("Enter P" + processes[i].processID + " BT: ");
             processes[i].burst = sc.nextInt();
             processes[i].remainingTime = processes[i].burst;
             processes[i].finish = 0;
@@ -54,7 +54,7 @@ public class RRScheduling {
     }
 
     private static int getQuantumTime(Scanner sc) {
-        System.out.print("Enter time quantum: ");
+        System.out.print("Enter TQ: ");
         return sc.nextInt();
     }
 
@@ -99,8 +99,7 @@ public class RRScheduling {
     }
 
     private static void displaySchedulingTable(Process[] processes, int n) {
-        System.out.println("\n*** RR Scheduling (Preemptive) ***");
-        System.out.println("Processor\tArrival time\tBrust time\tCompletion Time\t\tTurn around time\tWaiting time");
+        System.out.println("\nProcessor\tArrival time\tBrust time\tCompletion Time\t\tTurn around time\tWaiting time");
         System.out.println("----------------------------------------------------------------------------------------------------------");
         double avgWAT = 0, avgTAT = 0;
         for (int i = 0; i < n; i++) {
